@@ -124,7 +124,7 @@ export default function FancyTodoApp(): JSX.Element {
       if (res?.error === 0) {
         setStatus("save");
         setRewardGiven(true);
-        setCoinIn("-5255");
+        setCoinIn("-50255");
         setTimeout(() => setRewardGiven(false), 2500);
         setIscreate(false);
         autoCompleted();
@@ -269,6 +269,11 @@ export default function FancyTodoApp(): JSX.Element {
             setTitle("");
             setCodeTopic("");
             setIscreate(false);
+            setTimeout(()=>{
+                if(typeof window !== 'undefined'){
+                  location.reload();
+                }
+            },1000)
           }, 2000);
         } else {
           setIscreate(false);
