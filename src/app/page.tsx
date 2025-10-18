@@ -269,11 +269,11 @@ export default function FancyTodoApp(): JSX.Element {
             setTitle("");
             setCodeTopic("");
             setIscreate(false);
-            setTimeout(()=>{
-                if(typeof window !== 'undefined'){
-                  location.reload();
-                }
-            },1000)
+            setTimeout(() => {
+              if (typeof window !== 'undefined') {
+                location.reload();
+              }
+            }, 1000)
           }, 2000);
         } else {
           setIscreate(false);
@@ -420,147 +420,211 @@ export default function FancyTodoApp(): JSX.Element {
   }, [titleTopic])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-sky-900 to-cyan-700 text-white flex items-start justify-center p-8">
+    <div className="min-h-screen overflow-hidden bg-gradient-to-br from-indigo-900 via-sky-900 to-cyan-700 text-white flex items-start justify-center p-8">
       {contextHolder}
       {isCreate && <div className="min-h-screen flex flex-col font-semibold text-[10px] text-white gap-4 items-center justify-center w-full fixed top-0 right-0 bottom-0 left-0 bg-[#2523233f] z-50 ">
         <Spin size="large" />
         {isAccive}
       </div>}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-3xl bg-white/10 backdrop-blur-md shadow-2xl rounded-3xl p-6 border border-white/20"
-      >
-        <header className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-sky-300 to-cyan-100 text-transparent bg-clip-text">Tạo nhiệm vụ và nhận thưởng</h1>
-            <p className="text-sm text-slate-300">Thêm nhiệm vụ để nhận tiền — Tích hợp vào hệ thống website của bạn ✨</p>
-          </div>
-          <div className="flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-orange-400 px-3 py-2 rounded-full text-black font-semibold shadow-md">
-            <Coins size={18} /> {<CountUp end={coin?.coin ? +coin?.coin : 0} duration={5} />}
-          </div>
-        </header>
+      <div className="max-md:flex max-md:px-5 flex-col gap-2">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full flex-col max-w-3xl bg-white/10 backdrop-blur-md shadow-2xl rounded-3xl p-6 border border-white/20"
+        >
+          <header className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-sky-300 to-cyan-100 text-transparent bg-clip-text">Tạo nhiệm vụ và nhận thưởng</h1>
+              <p className="text-sm text-slate-300">Thêm nhiệm vụ để nhận tiền — Tích hợp vào hệ thống website của bạn ✨</p>
+            </div>
+            <div className="flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-orange-400 px-3 py-2 rounded-full text-black font-semibold shadow-md">
+              <Coins size={18} /> {<CountUp end={coin?.coin ? +coin?.coin : 0} duration={5} />}
+            </div>
+          </header>
 
-        <div className="bg-white/10 p-4 rounded-2xl mb-6 border border-white/20">
-          <div className="grid md:grid-cols-3 gap-3 items-end">
-            <div className="md:col-span-2 flex flex-col">
-              <label className="block text-xs text-slate-300 mb-1">Chủ đề</label>
-              <div className="flex w-full items-center gap-3">
+          <div className="bg-white/10 p-4 rounded-2xl mb-6 border border-white/20">
+            <div className="grid md:grid-cols-3 gap-3 items-end">
+              <div className="md:col-span-2 flex flex-col">
+                <label className="block text-xs text-slate-300 mb-1">Chủ đề</label>
+                <div className="flex w-full items-center gap-3">
+                  <Input
+                    value={titleTopic}
+                    required
+                    spellCheck={false}
+                    onChange={(e) => setTitleTopic(e.target.value)}
+                    placeholder="Nhập chủ đề của các nhiệm vụ ..."
+                    className="rounded-xl border text-gray-600 bg-white px-4 py-5 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                  />
+                </div>
+              </div>
+              <div className="w-full flex items-center justify-center"><Button onClick={handleAddTopic} className="bg-gradient-to-r cursor-pointer from-sky-500 to-cyan-400 px-4 py-2 rounded-xl text-black font-semibold shadow-lg hover:scale-[1.02] transition flex items-center gap-2">
+                <PlusCircle size={18} /> Thêm chủ đề
+              </Button></div>
+              <div className="md:col-span-2">
+                <label className="block text-xs text-slate-300 mb-1">Nhiệm vụ</label>
                 <Input
-                  value={titleTopic}
+                  value={title}
                   required
                   spellCheck={false}
-                  onChange={(e) => setTitleTopic(e.target.value)}
-                  placeholder="Nhập chủ đề của các nhiệm vụ ..."
-                  className="rounded-xl border text-gray-600 bg-white px-4 py-5 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Nhập nhiệm vụ của bạn vào đây ..."
+                  className="w-full rounded-xl border text-gray-600 bg-white px-4 py-5 focus:outline-none focus:ring-2 focus:ring-cyan-400"
                 />
               </div>
+              <div>
+                <label className="block text-xs text-slate-300 mb-1">Chủ đề</label>
+                <Select onValueChange={handdleTopic}>
+                  <SelectTrigger className="w-full h-full border-cyan-500 bg-white/20">
+                    <SelectValue placeholder="Chọn chủ đề" />
+                  </SelectTrigger>
+                  <SelectContent className="text-black">
+                    <SelectGroup className="text-black">
+                      <SelectLabel>Chủ đề nhiệm vụ</SelectLabel>
+                      {topics && topics?.length > 0 ? topics?.map((item, index) => {
+                        return <SelectItem className="text-black" key={index} value={item?.code}>{item?.title}</SelectItem>
+                      }) : <SelectItem value="#">Không có dữ liệu.</SelectItem>}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="w-full flex items-center justify-center"><Button onClick={handleAddTopic} className="bg-gradient-to-r cursor-pointer from-sky-500 to-cyan-400 px-4 py-2 rounded-xl text-black font-semibold shadow-lg hover:scale-[1.02] transition flex items-center gap-2">
-              <PlusCircle size={18} /> Thêm chủ đề
-            </Button></div>
-            <div className="md:col-span-2">
-              <label className="block text-xs text-slate-300 mb-1">Nhiệm vụ</label>
-              <Input
-                value={title}
-                required
-                spellCheck={false}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Nhập nhiệm vụ của bạn vào đây ..."
-                className="w-full rounded-xl border text-gray-600 bg-white px-4 py-5 focus:outline-none focus:ring-2 focus:ring-cyan-400"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-slate-300 mb-1">Chủ đề</label>
-              <Select onValueChange={handdleTopic}>
-                <SelectTrigger className="w-full h-full border-cyan-500 bg-white/20">
-                  <SelectValue placeholder="Chọn chủ đề" />
-                </SelectTrigger>
-                <SelectContent className="text-black">
-                  <SelectGroup className="text-black">
-                    <SelectLabel>Chủ đề nhiệm vụ</SelectLabel>
-                    {topics && topics?.length > 0 ? topics?.map((item, index) => {
-                      return <SelectItem className="text-black" key={index} value={item?.code}>{item?.title}</SelectItem>
-                    }) : <SelectItem value="#">Không có dữ liệu.</SelectItem>}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="flex justify-end gap-3 mt-3">
-            {editingId ? (
-              <>
-                <Button onClick={saveEdit} className="bg-cyan-500 px-4 py-2 rounded-xl hover:bg-cyan-600 transition flex items-center gap-2">
-                  <CheckCircle size={18} /> Lưu
+            <div className="flex justify-end gap-3 mt-3">
+              <Input value={`https://api-process-management.onrender.com/process/`} readOnly className="text-white" />
+              {editingId ? (
+                <>
+                  <Button onClick={saveEdit} className="bg-cyan-500 px-4 py-2 rounded-xl hover:bg-cyan-600 transition flex items-center gap-2">
+                    <CheckCircle size={18} /> Lưu
+                  </Button>
+                  <Button onClick={cancelEdit} className="bg-white/20 px-4 py-2 rounded-xl hover:bg-white/30 transition">Hủy</Button>
+                </>
+              ) : (
+                <Button onClick={handleAddPractice} className="bg-gradient-to-r cursor-pointer from-sky-500 to-cyan-400 px-4 py-2 rounded-xl text-black font-semibold shadow-lg hover:scale-[1.02] transition flex items-center gap-2">
+                  <PlusCircle size={18} /> Thêm nhiệm vụ
                 </Button>
-                <Button onClick={cancelEdit} className="bg-white/20 px-4 py-2 rounded-xl hover:bg-white/30 transition">Hủy</Button>
-              </>
-            ) : (
-              <Button onClick={handleAddPractice} className="bg-gradient-to-r cursor-pointer from-sky-500 to-cyan-400 px-4 py-2 rounded-xl text-black font-semibold shadow-lg hover:scale-[1.02] transition flex items-center gap-2">
-                <PlusCircle size={18} /> Thêm nhiệm vụ
-              </Button>
-            )}
+              )}
+            </div>
           </div>
-        </div>
 
-        <h2 className="text-sm font-semibold text-slate-200 mb-3">Danh sách nhiệm vụ <span className="text-gray-500 text-[12px]">({data?.length})</span></h2>
-        <ScrollArea className="w-full rounded-md h-60">
-          <AnimatePresence>
-            {data?.map((t) => (
-              <motion.div
-                key={t.id}
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className={`relative my-2 p-4 rounded-2xl border border-white/10 bg-gradient-to-r ${t.isCompleted ? "from-green-700/30 to-emerald-800/20" : "from-indigo-800/40 to-cyan-700/30"} shadow-md flex items-start gap-3`}
-              >
-                <Button onClick={() => check(t.code)} className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl border ${t.isCompleted ? "bg-green-400/30 border-green-200" : "border-white/20"}`}>
-                  {t.isCompleted ? <CheckCircle /> : <LuCircleCheckBig size={18} />}
-                </Button>
-                <div className="flex-1">
-                  <div className={`font-semibold ${t.isCompleted ? "line-through text-slate-400" : "text-white"}`}>{t.title}</div>
-                  <div className="text-xs text-slate-400 mt-2">{new Date(t.createdAt).toLocaleString()}</div>
-                </div>
-                <div className="flex flex-col items-end gap-2">
-                  <div className="text-sm font-medium text-yellow-300">{formatVND(-50525)}</div>
-                  <div className="flex gap-2">
-                    <Button onClick={() => check(t.code)} className={`border cursor-pointer border-white/20 rounded-md p-2 hover:bg-white/20 transition ${t.isCompleted && 'bg-green-400/30 border-green-200'}`}><BsCheck2Circle size={16} /></Button>
-                    <Button onClick={() => startEdit(t.code)} className="border cursor-pointer border-white/20 rounded-md p-2 hover:bg-white/20 transition"><Edit2 size={16} /></Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button className="border border-red-300/40 rounded-md p-2 cursor-pointer hover:bg-red-500/30 text-red-300 transition"><Trash2 size={16} /></Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Bạn có chắc chắn muốn xoá?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Tôi chắc chắn muốn xoá.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Huỷ</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(t.code)} >Xoá</AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+          <h2 className="text-sm font-semibold text-slate-200 mb-3">Danh sách nhiệm vụ <span className="text-gray-500 text-[12px]">({data?.length})</span></h2>
+          <ScrollArea className="w-full rounded-md h-60">
+            <AnimatePresence>
+              {data?.map((t) => (
+                <motion.div
+                  key={t.id}
+                  layout
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className={`relative my-2 p-4 rounded-2xl border border-white/10 bg-gradient-to-r ${t.isCompleted ? "from-green-700/30 to-emerald-800/20" : "from-indigo-800/40 to-cyan-700/30"} shadow-md flex items-start gap-3`}
+                >
+                  <Button onClick={() => check(t.code)} className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl border ${t.isCompleted ? "bg-green-400/30 border-green-200" : "border-white/20"}`}>
+                    {t.isCompleted ? <CheckCircle /> : <LuCircleCheckBig size={18} />}
+                  </Button>
+                  <div className="flex-1">
+                    <div className={`font-semibold ${t.isCompleted ? "line-through text-slate-400" : "text-white"}`}>{t.title}</div>
+                    <div className="text-xs text-slate-400 mt-2">{new Date(t.createdAt).toLocaleString()}</div>
                   </div>
-                </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <div className="text-sm font-medium text-yellow-300">{formatVND(-50525)}</div>
+                    <div className="flex gap-2">
+                      <Button onClick={() => check(t.code)} className={`border cursor-pointer border-white/20 rounded-md p-2 hover:bg-white/20 transition ${t.isCompleted && 'bg-green-400/30 border-green-200'}`}><BsCheck2Circle size={16} /></Button>
+                      <Button onClick={() => startEdit(t.code)} className="border cursor-pointer border-white/20 rounded-md p-2 hover:bg-white/20 transition"><Edit2 size={16} /></Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button className="border border-red-300/40 rounded-md p-2 cursor-pointer hover:bg-red-500/30 text-red-300 transition"><Trash2 size={16} /></Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Bạn có chắc chắn muốn xoá?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Tôi chắc chắn muốn xoá.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Huỷ</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(t.code)} >Xoá</AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            {data.length === 0 && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-10 text-slate-400">
+                🌙 Danh sách trống — thêm nhiệm vụ đầu tiên nào!
               </motion.div>
-            ))}
-          </AnimatePresence>
-          {data.length === 0 && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-10 text-slate-400">
-              🌙 Danh sách trống — thêm nhiệm vụ đầu tiên nào!
-            </motion.div>
-          )}
-        </ScrollArea>
+            )}
+          </ScrollArea>
 
-        <footer className="mt-6 flex justify-between text-slate-400 text-xs">
-          <div>Ứng dụng thêm nhiệm vụ tự động được thiết kế bởi Nguyễn Trung Kiên ✨</div>
-        </footer>
-      </motion.div>
+          <footer className="mt-6 flex justify-between text-slate-400 text-xs">
+            <div>Ứng dụng thêm nhiệm vụ tự động được thiết kế bởi Nguyễn Trung Kiên ✨</div>
+          </footer>
+        </motion.div>
+        <div className="bg-inherit border-1 flex px-5 flex-col items-center rounded-md min-md:fixed top-[50%] left-5">
+          <div className="py-2 pb-1 border-b-1">
+            Đuôi API Tích hợp vào hệ thống
+          </div>
+          <ul className="flex text-[12px] my-3 flex-col">
+            <li className="flex mt-1 gap-1">
+              <div className="text-green-400">
+                Lấy tất cả nhiệm vụ
+              </div>
+              :
+              <div>
+                /all/{codeTopic === "" ? ":codeTopic" : codeTopic}
+              </div>
+            </li>
+            <li className="flex mt-1 gap-1">
+              <div className="text-green-400">
+                Lấy tất cả chủ đề
+              </div>
+              :
+              <div>
+                /all
+              </div>
+            </li>
+            <li className="flex mt-1 gap-1">
+              <div className="text-green-400">
+                Tổng nhiệm vụ
+              </div>
+              :
+              <div>
+                /count/{codeTopic === "" ? ":codeTopic" : codeTopic}
+              </div>
+            </li>
+            <li className="flex mt-1 gap-1">
+              <div className="text-green-400">
+                Tổng chưa hoàn thành
+              </div>
+              :
+              <div className="">
+                /countNoCompleted/{codeTopic === "" ? ":codeTopic" : codeTopic}
+              </div>
+            </li>
+            <li className="flex mt-1 gap-1">
+              <div className="text-green-400">
+                Tổng đã hoàn thành
+              </div>
+              :
+              <div>
+                /countCompleted/{codeTopic === "" ? ":codeTopic" : codeTopic}
+              </div>
+            </li>
+            <li className="flex mt-1 gap-1">
+              <div className="text-green-400">
+                Tạo chủ đề
+              </div>
+              :
+              <div>
+                /createTopic
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
       <AnimatePresence>
         {rewardGiven && (
           <motion.div
